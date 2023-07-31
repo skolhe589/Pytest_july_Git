@@ -1,0 +1,266 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.4, pytest-7.4.0, pluggy-1.2.0 -- C:\Users\vnkol\AppData\Local\Programs\Python\Python311\python.exe
+cachedir: .pytest_cache
+metadata: {'Python': '3.11.4', 'Platform': 'Windows-10-10.0.22621-SP0', 'Packages': {'pytest': '7.4.0', 'pluggy': '1.2.0'}, 'Plugins': {'html': '3.2.0', 'metadata': '3.0.0'}, 'CI': 'true', 'BUILD_NUMBER': '10', 'BUILD_ID': '10', 'BUILD_URL': 'http://localhost:9090/job/pythonProject_July_23/10/', 'NODE_NAME': 'built-in', 'JOB_NAME': 'pythonProject_July_23', 'BUILD_TAG': 'jenkins-pythonProject_July_23-10', 'EXECUTOR_NUMBER': '0', 'JENKINS_URL': 'http://localhost:9090/', 'WORKSPACE': 'D:\\SHUBH\\IT Software\\Python\\pythonProject_July_23'}
+rootdir: D:\SHUBH\IT Software\Python\pythonProject_July_23
+plugins: html-3.2.0, metadata-3.0.0
+collecting ... collected 12 items
+
+test_case_001.py::Test_Credence_001::test_sum_001 Sum of a and b is :10
+PASSED
+test_case_001.py::Test_Credence_001::test_CredenceUrl_002 You are at credence.in
+PASSED
+test_case_001.py::Test_Credence_001::test_sub_003 Subtraction of a from b is :-4
+PASSED
+test_case_002.py::Test_Credence_002::test_CredKart_Login_008 Login TestCase is Failed
+FAILED
+test_case_002.py::Test_Credence_002::test_amountverfication [9199.96, 399.96, 2399.97]
+Exp_Subtotal-->11999.89
+[9199.96, 399.96, 2399.97]
+[11999.89, 1559.99, 13559.88]
+SubTotal is matched
+PASSED
+test_case_002.py::Test_Credence_002::test_Checkout Your order has been placed successfully.
+PASSED
+test_case_003.py::Test_Credence_003::test_mul_004 Mul of a and b is :21
+PASSED
+test_case_003.py::Test_Credence_003::test_sub_005 Subtraction of a from b is :5
+PASSED
+test_case_004.py::Test_Credence_003::test_mul_009 Mul of a and b is :21
+PASSED
+test_case_004.py::Test_Credence_003::test_sub_010 Subtraction of a from b is :5
+PASSED
+test_case_005.py::Test_Credence_005::test_mul_004 Mul of a and b is :21
+PASSED
+test_case_005.py::Test_Credence_005::test_sub_005 Subtraction of a from b is :5
+PASSED
+
+================================== FAILURES ===================================
+__________________ Test_Credence_002.test_CredKart_Login_008 __________________
+
+self = <test_case_002.Test_Credence_002 object at 0x000002AAFFA23850>
+
+    def test_CredKart_Login_008(self):
+        driver = webdriver.Chrome()
+        driver.maximize_window()
+        # Go to Url
+        driver.get("https://automation.credence.in/login")
+        driver.find_element(By.XPATH, "//input[@name='email']").send_keys("Credencetest@test.com")
+        driver.find_element(By.CSS_SELECTOR, "input[id='password']").send_keys("Credence@1234")
+        driver.find_element(By.XPATH, "//button[@type='submit']").click()
+        try:
+>           driver.find_element(By.XPATH, "//h2[normalize-space()='CredKart']")
+
+test_case_002.py:18: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\vnkol\AppData\Local\Programs\Python\Python311\Lib\site-packages\selenium\webdriver\remote\webdriver.py:740: in find_element
+    return self.execute(Command.FIND_ELEMENT, {"using": by, "value": value})["value"]
+C:\Users\vnkol\AppData\Local\Programs\Python\Python311\Lib\site-packages\selenium\webdriver\remote\webdriver.py:346: in execute
+    self.error_handler.check_response(response)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <selenium.webdriver.remote.errorhandler.ErrorHandler object at 0x000002AAFF1CF250>
+response = {'status': 404, 'value': '{"value":{"error":"no such element","message":"no such element: Unable to locate element: {\...dInitThunk [0x76A37D59+25]\\n\\tRtlInitializeExceptionChain [0x7748B79B+107]\\n\\tRtlClearBits [0x7748B71F+191]\\n"}}'}
+
+    def check_response(self, response: Dict[str, Any]) -> None:
+        """Checks that a JSON response from the WebDriver does not have an
+        error.
+    
+        :Args:
+         - response - The JSON response from the WebDriver server as a dictionary
+           object.
+    
+        :Raises: If the response contains an error message.
+        """
+        status = response.get("status", None)
+        if not status or status == ErrorCode.SUCCESS:
+            return
+        value = None
+        message = response.get("message", "")
+        screen: str = response.get("screen", "")
+        stacktrace = None
+        if isinstance(status, int):
+            value_json = response.get("value", None)
+            if value_json and isinstance(value_json, str):
+                import json
+    
+                try:
+                    value = json.loads(value_json)
+                    if len(value) == 1:
+                        value = value["value"]
+                    status = value.get("error", None)
+                    if not status:
+                        status = value.get("status", ErrorCode.UNKNOWN_ERROR)
+                        message = value.get("value") or value.get("message")
+                        if not isinstance(message, str):
+                            value = message
+                            message = message.get("message")
+                    else:
+                        message = value.get("message", None)
+                except ValueError:
+                    pass
+    
+        exception_class: Type[WebDriverException]
+        if status in ErrorCode.NO_SUCH_ELEMENT:
+            exception_class = NoSuchElementException
+        elif status in ErrorCode.NO_SUCH_FRAME:
+            exception_class = NoSuchFrameException
+        elif status in ErrorCode.NO_SUCH_SHADOW_ROOT:
+            exception_class = NoSuchShadowRootException
+        elif status in ErrorCode.NO_SUCH_WINDOW:
+            exception_class = NoSuchWindowException
+        elif status in ErrorCode.STALE_ELEMENT_REFERENCE:
+            exception_class = StaleElementReferenceException
+        elif status in ErrorCode.ELEMENT_NOT_VISIBLE:
+            exception_class = ElementNotVisibleException
+        elif status in ErrorCode.INVALID_ELEMENT_STATE:
+            exception_class = InvalidElementStateException
+        elif (
+            status in ErrorCode.INVALID_SELECTOR
+            or status in ErrorCode.INVALID_XPATH_SELECTOR
+            or status in ErrorCode.INVALID_XPATH_SELECTOR_RETURN_TYPER
+        ):
+            exception_class = InvalidSelectorException
+        elif status in ErrorCode.ELEMENT_IS_NOT_SELECTABLE:
+            exception_class = ElementNotSelectableException
+        elif status in ErrorCode.ELEMENT_NOT_INTERACTABLE:
+            exception_class = ElementNotInteractableException
+        elif status in ErrorCode.INVALID_COOKIE_DOMAIN:
+            exception_class = InvalidCookieDomainException
+        elif status in ErrorCode.UNABLE_TO_SET_COOKIE:
+            exception_class = UnableToSetCookieException
+        elif status in ErrorCode.TIMEOUT:
+            exception_class = TimeoutException
+        elif status in ErrorCode.SCRIPT_TIMEOUT:
+            exception_class = TimeoutException
+        elif status in ErrorCode.UNKNOWN_ERROR:
+            exception_class = WebDriverException
+        elif status in ErrorCode.UNEXPECTED_ALERT_OPEN:
+            exception_class = UnexpectedAlertPresentException
+        elif status in ErrorCode.NO_ALERT_OPEN:
+            exception_class = NoAlertPresentException
+        elif status in ErrorCode.IME_NOT_AVAILABLE:
+            exception_class = ImeNotAvailableException
+        elif status in ErrorCode.IME_ENGINE_ACTIVATION_FAILED:
+            exception_class = ImeActivationFailedException
+        elif status in ErrorCode.MOVE_TARGET_OUT_OF_BOUNDS:
+            exception_class = MoveTargetOutOfBoundsException
+        elif status in ErrorCode.JAVASCRIPT_ERROR:
+            exception_class = JavascriptException
+        elif status in ErrorCode.SESSION_NOT_CREATED:
+            exception_class = SessionNotCreatedException
+        elif status in ErrorCode.INVALID_ARGUMENT:
+            exception_class = InvalidArgumentException
+        elif status in ErrorCode.NO_SUCH_COOKIE:
+            exception_class = NoSuchCookieException
+        elif status in ErrorCode.UNABLE_TO_CAPTURE_SCREEN:
+            exception_class = ScreenshotException
+        elif status in ErrorCode.ELEMENT_CLICK_INTERCEPTED:
+            exception_class = ElementClickInterceptedException
+        elif status in ErrorCode.INSECURE_CERTIFICATE:
+            exception_class = InsecureCertificateException
+        elif status in ErrorCode.INVALID_COORDINATES:
+            exception_class = InvalidCoordinatesException
+        elif status in ErrorCode.INVALID_SESSION_ID:
+            exception_class = InvalidSessionIdException
+        elif status in ErrorCode.UNKNOWN_METHOD:
+            exception_class = UnknownMethodException
+        else:
+            exception_class = WebDriverException
+        if not value:
+            value = response["value"]
+        if isinstance(value, str):
+            raise exception_class(value)
+        if message == "" and "message" in value:
+            message = value["message"]
+    
+        screen = None  # type: ignore[assignment]
+        if "screen" in value:
+            screen = value["screen"]
+    
+        stacktrace = None
+        st_value = value.get("stackTrace") or value.get("stacktrace")
+        if st_value:
+            if isinstance(st_value, str):
+                stacktrace = st_value.split("\n")
+            else:
+                stacktrace = []
+                try:
+                    for frame in st_value:
+                        line = frame.get("lineNumber", "")
+                        file = frame.get("fileName", "<anonymous>")
+                        if line:
+                            file = f"{file}:{line}"
+                        meth = frame.get("methodName", "<anonymous>")
+                        if "className" in frame:
+                            meth = f"{frame['className']}.{meth}"
+                        msg = "    at %s (%s)"
+                        msg = msg % (meth, file)
+                        stacktrace.append(msg)
+                except TypeError:
+                    pass
+        if exception_class == UnexpectedAlertPresentException:
+            alert_text = None
+            if "data" in value:
+                alert_text = value["data"].get("text")
+            elif "alert" in value:
+                alert_text = value["alert"].get("text")
+            raise exception_class(message, screen, stacktrace, alert_text)  # type: ignore[call-arg]  # mypy is not smart enough here
+>       raise exception_class(message, screen, stacktrace)
+E       selenium.common.exceptions.NoSuchElementException: Message: no such element: Unable to locate element: {"method":"xpath","selector":"//h2[normalize-space()='CredKart']"}
+E         (Session info: chrome=115.0.5790.110); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+E       Stacktrace:
+E       Backtrace:
+E       	GetHandleVerifier [0x0102A813+48355]
+E       	(No symbol) [0x00FBC4B1]
+E       	(No symbol) [0x00EC5358]
+E       	(No symbol) [0x00EF09A5]
+E       	(No symbol) [0x00EF0B3B]
+E       	(No symbol) [0x00F1E232]
+E       	(No symbol) [0x00F0A784]
+E       	(No symbol) [0x00F1C922]
+E       	(No symbol) [0x00F0A536]
+E       	(No symbol) [0x00EE82DC]
+E       	(No symbol) [0x00EE93DD]
+E       	GetHandleVerifier [0x0128AABD+2539405]
+E       	GetHandleVerifier [0x012CA78F+2800735]
+E       	GetHandleVerifier [0x012C456C+2775612]
+E       	GetHandleVerifier [0x010B51E0+616112]
+E       	(No symbol) [0x00FC5F8C]
+E       	(No symbol) [0x00FC2328]
+E       	(No symbol) [0x00FC240B]
+E       	(No symbol) [0x00FB4FF7]
+E       	BaseThreadInitThunk [0x76A37D59+25]
+E       	RtlInitializeExceptionChain [0x7748B79B+107]
+E       	RtlClearBits [0x7748B71F+191]
+
+C:\Users\vnkol\AppData\Local\Programs\Python\Python311\Lib\site-packages\selenium\webdriver\remote\errorhandler.py:245: NoSuchElementException
+
+During handling of the above exception, another exception occurred:
+
+self = <test_case_002.Test_Credence_002 object at 0x000002AAFFA23850>
+
+    def test_CredKart_Login_008(self):
+        driver = webdriver.Chrome()
+        driver.maximize_window()
+        # Go to Url
+        driver.get("https://automation.credence.in/login")
+        driver.find_element(By.XPATH, "//input[@name='email']").send_keys("Credencetest@test.com")
+        driver.find_element(By.CSS_SELECTOR, "input[id='password']").send_keys("Credence@1234")
+        driver.find_element(By.XPATH, "//button[@type='submit']").click()
+        try:
+            driver.find_element(By.XPATH, "//h2[normalize-space()='CredKart']")
+            print("Login TestCase is Passed")
+            driver.close()
+            assert True
+        except:
+            print("Login TestCase is Failed")
+            driver.close()
+>           assert False
+E           assert False
+
+test_case_002.py:25: AssertionError
+- generated html file: file:///D:/SHUBH/IT%20Software/Python/pythonProject_July_23/Reports/report.html -
+=========================== short test summary info ===========================
+FAILED test_case_002.py::Test_Credence_002::test_CredKart_Login_008 - assert False
+======================== 1 failed, 11 passed in 52.34s ========================
